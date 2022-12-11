@@ -1,0 +1,128 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: sans-serif;
+  text-decoration: none;
+  list-style-type: none;
+}
+
+body {
+  background: linear-gradient(180deg, #fb2576, #332fd0);
+}
+
+#main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.sign-in-container {
+  background: #fff;
+  min-width: 400px;
+  max-width: 500px;
+  border-radius: 6px;
+}
+
+.sign-in {
+  padding: 30px;
+}
+
+.sign-in-header {
+  text-align: center;
+}
+
+.heading {
+  font-size: 22px;
+  margin: 10px 0 20px;
+}
+
+.heading-desc {
+  font-size: 16px;
+  color: #777;
+}
+
+.heading__icon {
+  color: red;
+  margin-left: 2px;
+}
+
+.form {
+  margin-top: 70px;
+}
+
+.form-group + .form-group {
+  margin-top: 50px;
+}
+
+.form-group {
+  position: relative;
+}
+
+.form-label {
+  position: absolute;
+  position: absolute;
+  top: -25px;
+  left: 0;
+  cursor: pointer;
+}
+
+.form-input {
+  padding: 10px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100%;
+  border: 2px solid #e5e5e5;
+  outline: none;
+  transition: 0.5s;
+}
+
+.form-input:focus {
+  border-color: #332fd0;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 10px 0;
+  text-align: center;
+  border-radius: 8px;
+  color: #fff;
+  background: #332fd0;
+  font-weight: 500;
+  margin-top: 20px;
+  border: none;
+  font-size: 18px;
+  transition: 0.3s;
+}
+
+.submit-btn:hover {
+  opacity: 0.9;
+  cursor: pointer;
+}
+
+.sign-up {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sign-up-text {
+  color: #777;
+}
+
+.sign-up__link {
+  margin-left: 10px;
+  text-decoration: none;
+  color: #000;
+}
+
+.sign-up__link:hover {
+  text-decoration: underline;
+  color: #332fd0;
+}

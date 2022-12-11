@@ -1,0 +1,166 @@
+// HTML
+<div class="div">
+    <h2>Danh sách khóa học</h2>
+    <ul id="course-list"></ul>
+    <div>
+        <label for="">Name</label>
+        <input type="text" name="name" />
+    </div>
+    <div>
+        <label for="">Desc</label>
+        <input type="text" name="description" />
+    </div>
+    <div>
+        <label for="">Id</label>
+        <input type="text" name="id" />
+    </div>
+    <div>
+        <button id="create">Create</button>
+    </div>
+</div>
+
+//JS
+var courserApi = 'http://localhost:3000/Course';
+
+function start() {
+    getCourse(renderCourse);
+    handleCreateForm();
+
+}
+
+start();
+
+function getCourse(callback) {
+    fetch(courserApi)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(callback)
+}
+
+function createCourse(data, callback) {
+    var option = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: JSON.stringify(data)
+    }
+
+    fetch(courserApi, option)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(callback);
+}
+
+
+function handleDeleteCourse(id) {
+    var option = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+    }
+
+    fetch(courserApi + '/' + id, option)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function () {
+            var getCourseItem = document.querySelector('.course-item-' + id);
+            if (getCourseItem) {
+                getCourseItem.remove();
+            }
+        });
+}
+
+function renderCourse(courses) {
+    var html = courses.map(function (course) {
+        return `
+    <li class="course-item-${course.id}">
+    <h4 class="course-name-${course.id}">Khóa học: ${course.name}</h4>
+    <p class="course-description-${course.id}">Chi tiết: ${course.description}</p>
+    <button onclick="handleDeleteCourse(${course.id})">Xóa</button>
+    <button onclick="handleUpdateForm(${course.id})">Sửa</button>
+    </li>`
+    })
+    document.getElementById('course-list').innerHTML = html.join('');
+
+}
+
+function handleCreateForm() {
+    var createBtn = document.querySelector('#create')
+    createBtn.onclick = function () {
+        var nameInput = document.querySelector('input[name="name"]').value
+        var descriptionInput = document.querySelector('input[name="description"]').value
+
+        var newCourse = {
+            name: nameInput,
+            description: descriptionInput
+        };
+
+        createCourse(newCourse, function () {
+            getCourse(renderCourse);
+        })
+    }
+
+}
+
+function editForm(data, id) {
+    var option = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }
+
+    fetch(courserApi + '/' + id, option)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function () {
+            var courseItem = document.querySelector('.course-item-' + id)
+            courseItem.innerHTML = `
+      <li class="course-item-${data.id}">
+      <h4 class="course-name-${data.id}">Khóa học: ${data.name}</h4>
+      <p class="course-description-${data.id}">Chi tiết: ${data.description}</p>
+      <button onclick="handleDeleteCourse(${id})">Xóa</button>
+      <button onclick="handleUpdateForm(${id})">Sửa</button>
+      </li>`
+        })
+
+}
+
+function handleUpdateForm(id) {
+    var updateBtn = document.querySelector('#create')
+    updateBtn.textContent = 'Update'
+    // get value của nội dung có id vừa click sửa gán vào ô input
+    document.querySelector('input[name="name"]').value = document.querySelector('.course-name-' + id).innerText
+    document.querySelector('input[name="description"]').value = document.querySelector('.course-description-' + id).innerText
+
+    updateBtn.onclick = function () {
+        var newName = document.querySelector('input[name="name"]').value
+        var newDescription = document.querySelector('input[name="description"]').value
+
+        var formData = {
+            name: newName,
+            description: newDescription
+        }
+
+        editForm(formData, id)
+        clearFormUpdate();
+    }
+
+
+}
+
+function clearFormUpdate() {
+    document.querySelector('#create').textContent = 'Create'
+    document.querySelector('input[name="name"]').value = ''
+    document.querySelector('input[name="description"]').value = ''
+}
+
